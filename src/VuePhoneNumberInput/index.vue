@@ -23,6 +23,7 @@
         :no-flags="noFlags"
         :size="size"
         class="input-country-selector"
+        v-on:countryChanged="populateCountryName"
       />
     </div>
     <div class="flex-1">
@@ -47,7 +48,9 @@
         @blur="$emit('phone-number-blur')"
       />
     </div>
+    <p>{{countryName}}</p>
   </div>
+
 </template>
 <script>
   /* eslint-disable */
@@ -100,7 +103,7 @@
     data () {
       return {
         results: {},
-        focusInput: false
+        focusInput: false,
       }
     },
     computed: {
@@ -130,7 +133,8 @@
           return this.results.countryCode || this.locale
         },
         set (newCountry) {
-          this.emitValues({countryCode: newCountry, phoneNumber: this.phoneNumber})
+          console.log('country code', this.countryName)
+          this.emitValues({countryCode: newCountry, phoneNumber: this.phoneNumber,countryName: this.countryName})
           if (this.focusInput) {
             this.$refs.PhoneNumberInput.$el.querySelector('input').focus()
           }
@@ -142,7 +146,16 @@
           return this.value
         },
         set (newPhone) {
-          this.emitValues({countryCode: this.countryCode, phoneNumber: newPhone})
+          this.emitValues({countryCode: this.countryCode, phoneNumber: newPhone, countryName: this.countryName})
+        }
+      },
+      countryName: {
+        get () {
+          return this.results.countryName
+        },
+        set (newCountryName) {
+          console.log('country name ', newCountryName,' Computed value',this.countryName)
+          this.emitValues({countryCode: this.countryCode, phoneNumber: this.phoneNumber, countryName : newCountryName})
         }
       },
       shouldChooseCountry () {
@@ -172,24 +185,26 @@
         const asYouType = new AsYouType(payload.countryCode)
         return asYouType.input(payload.phoneNumber)
       },
-      getParsePhoneNumberFromString ({ phoneNumber, countryCode }) {
+      getParsePhoneNumberFromString ({ phoneNumber, countryCode,countryName }) {
         const parsing = phoneNumber && countryCode ? parsePhoneNumberFromString(phoneNumber, countryCode) : null
+        console.log(" We are in the parent country code "+countryCode+" Let's get the new country ", countryName)
         return {
           phoneNumber: phoneNumber ? phoneNumber : null,
           countryCode: countryCode,
+          countryName: countryName,
           isValid: false,
           ...( parsing
-            ? {
-              formattedNumber: parsing.number,
-              nationalNumber: parsing.nationalNumber,
-              isValid: parsing.isValid(),
-              type: parsing.getType(),
-              formatInternational: parsing.formatInternational(),
-              formatNational: parsing.formatNational(),
-              uri: parsing.getURI(),
-              e164: parsing.format('E.164')
-            }
-            : null
+              ? {
+                formattedNumber: parsing.number,
+                nationalNumber: parsing.nationalNumber,
+                isValid: parsing.isValid(),
+                type: parsing.getType(),
+                formatInternational: parsing.formatInternational(),
+                formatNational: parsing.formatNational(),
+                uri: parsing.getURI(),
+                e164: parsing.format('E.164')
+              }
+              : null
           )
         }
       },
@@ -198,7 +213,11 @@
         this.$emit('input', asYouType)
         this.results = this.getParsePhoneNumberFromString(payload)
         this.$emit('update', this.results)
+      },
+      populateCountryName(countryName){
+        this.countryName = countryName;
       }
+
     }
   }
 </script>
@@ -210,7 +229,7 @@
       box-sizing: border-box;
     }
     font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen,
-        Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
     .select-country-container {
       flex: 0 0 120px;
       width: 120px;

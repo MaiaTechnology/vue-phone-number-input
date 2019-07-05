@@ -63,7 +63,9 @@
           ]"
           class="flex align-center country-list-item"
           :style="[value === item.iso2 ? bgStyle : null]"
-          @click.stop="updateValue(item.iso2)"
+          :countryName="countryName"
+          @click.stop="updateValue(item)"
+
         >
           <div
             v-if="!noFlags"
@@ -108,12 +110,13 @@
       ignoredCountries: { type: Array, default: Array },
       noFlags: { type: Boolean, default: false }
     },
-    data () {
+    data(){
       return {
         isFocus: false,
         selectedIndex: null,
         tmpValue: this.value,
-        query: ''
+        query: '',
+        countryName:''
       }
     },
     computed: {
@@ -148,7 +151,7 @@
       countriesSorted () {
         return this.preferredCountries
           ? [ ...this.countriesFiltered,
-              ...this.otherCountries ]
+            ...this.otherCountries ]
           : this.onlyCountries
             ? this.countriesFiltered
             : this.countriesList
@@ -182,10 +185,15 @@
         this.$emit('blur')
         this.isFocus = false
       },
-      updateValue (iso2) {
+      updateValue (item) {
         this.isFocus = false
-        this.tmpValue = iso2
-        this.$emit('input', iso2)
+        this.tmpValue = item.iso2
+        this.countryName = item.name
+        //console.log(this.tmpValue)
+        //console.log(this.countryName)
+        this.$emit('input', item.iso2)
+        this.$emit('countryChanged', this.countryName)
+        //this.$emit('name', item.name)
       },
       scrollToSelectedOnFocus (arrayIndex) {
         this.$nextTick(() => {
