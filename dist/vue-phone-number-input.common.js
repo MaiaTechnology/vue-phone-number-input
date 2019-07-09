@@ -4080,12 +4080,12 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"e51417e0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/VuePhoneNumberInput/index.vue?vue&type=template&id=16532662&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"vue-phone-number-input flex",class:[{ 'dark': _vm.dark }, _vm.size]},[_c('div',{staticClass:"select-country-container"},[_c('CountrySelector',{ref:"CountrySelector",staticClass:"input-country-selector",attrs:{"id":(_vm.id + "_country_selector"),"items":_vm.codesCountries,"color":_vm.color,"valid-color":_vm.validColor,"error":_vm.shouldChooseCountry,"hint":_vm.shouldChooseCountry ? _vm.t.countrySelectorError : null,"dark":_vm.dark,"disabled":_vm.disabled,"valid":_vm.isValid && !_vm.noValidatorState,"preferred-countries":_vm.preferredCountries,"only-countries":_vm.onlyCountries,"ignored-countries":_vm.ignoredCountries,"label":_vm.t.countrySelectorLabel,"no-flags":_vm.noFlags,"size":_vm.size},on:{"countryChanged":_vm.populateCountryName},model:{value:(_vm.countryCode),callback:function ($$v) {_vm.countryCode=$$v},expression:"countryCode"}})],1),_c('div',{staticClass:"flex-1"},[_c('VueInputUI',_vm._b({ref:"PhoneNumberInput",staticClass:"input-phone-number",attrs:{"id":(_vm.id + "_phone_number"),"label":_vm.t.phoneNumberLabel,"hint":_vm.hintValue,"color":_vm.color,"valid-color":_vm.validColor,"dark":_vm.dark,"disabled":_vm.disabled,"size":_vm.size,"error":_vm.error,"valid":_vm.isValid && !_vm.noValidatorState,"required":_vm.required,"type":"tel"},on:{"focus":function($event){return _vm.$emit('phone-number-focused')},"blur":function($event){return _vm.$emit('phone-number-blur')}},model:{value:(_vm.phoneNumber),callback:function ($$v) {_vm.phoneNumber=$$v},expression:"phoneNumber"}},'VueInputUI',_vm.$attrs,false))],1),_c('p',[_vm._v(_vm._s(_vm.countryName))])])}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"e51417e0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/VuePhoneNumberInput/index.vue?vue&type=template&id=4a263118&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"vue-phone-number-input flex",class:[{ 'dark': _vm.dark }, _vm.size]},[_c('div',{staticClass:"select-country-container"},[_c('CountrySelector',{ref:"CountrySelector",staticClass:"input-country-selector",attrs:{"id":(_vm.id + "_country_selector"),"items":_vm.codesCountries,"color":_vm.color,"valid-color":_vm.validColor,"error":_vm.shouldChooseCountry,"hint":_vm.shouldChooseCountry ? _vm.t.countrySelectorError : null,"dark":_vm.dark,"disabled":_vm.disabled,"valid":_vm.isValid && !_vm.noValidatorState,"preferred-countries":_vm.preferredCountries,"only-countries":_vm.onlyCountries,"ignored-countries":_vm.ignoredCountries,"label":_vm.t.countrySelectorLabel,"no-flags":_vm.noFlags,"size":_vm.size},on:{"countryChanged":_vm.populateCountryName},model:{value:(_vm.countryCode),callback:function ($$v) {_vm.countryCode=$$v},expression:"countryCode"}})],1),_c('div',{staticClass:"flex-1"},[_c('VueInputUI',_vm._b({ref:"PhoneNumberInput",staticClass:"input-phone-number",attrs:{"id":(_vm.id + "_phone_number"),"label":_vm.t.phoneNumberLabel,"hint":_vm.hintValue,"color":_vm.color,"valid-color":_vm.validColor,"dark":_vm.dark,"disabled":_vm.disabled,"size":_vm.size,"error":_vm.error,"valid":_vm.isValid && !_vm.noValidatorState,"required":_vm.required,"type":"tel"},on:{"focus":function($event){return _vm.$emit('phone-number-focused')},"blur":function($event){return _vm.$emit('phone-number-blur')}},model:{value:(_vm.phoneNumber),callback:function ($$v) {_vm.phoneNumber=$$v},expression:"phoneNumber"}},'VueInputUI',_vm.$attrs,false))],1)])}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/VuePhoneNumberInput/index.vue?vue&type=template&id=16532662&
+// CONCATENATED MODULE: ./src/VuePhoneNumberInput/index.vue?vue&type=template&id=4a263118&
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/core-js/object/get-own-property-descriptor.js
 var get_own_property_descriptor = __webpack_require__("268f");
@@ -10020,7 +10020,6 @@ var component = normalizeComponent(
 //
 //
 //
-//
 
 /* eslint-disable */
 
@@ -10154,7 +10153,6 @@ var VuePhoneNumberInputvue_type_script_lang_js_isCountryAvailable = function isC
         return this.results.countryCode || this.locale;
       },
       set: function set(newCountry) {
-        console.log('country code', this.countryName);
         this.emitValues({
           countryCode: newCountry,
           phoneNumber: this.phoneNumber,
@@ -10185,7 +10183,6 @@ var VuePhoneNumberInputvue_type_script_lang_js_isCountryAvailable = function isC
         return this.results.countryName;
       },
       set: function set(newCountryName) {
-        console.log('country name ', newCountryName, ' Computed value', this.countryName);
         this.emitValues({
           countryCode: this.countryCode,
           phoneNumber: this.phoneNumber,
@@ -10223,7 +10220,6 @@ var VuePhoneNumberInputvue_type_script_lang_js_isCountryAvailable = function isC
           countryCode = _ref.countryCode,
           countryName = _ref.countryName;
       var parsing = phoneNumber && countryCode ? index_es6_parsePhoneNumberFromString(phoneNumber, countryCode) : null;
-      console.log(" We are in the parent country code " + countryCode + " Let's get the new country ", countryName);
       return _objectSpread({
         phoneNumber: phoneNumber ? phoneNumber : null,
         countryCode: countryCode,

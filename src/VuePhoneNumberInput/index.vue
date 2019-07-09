@@ -48,7 +48,6 @@
         @blur="$emit('phone-number-blur')"
       />
     </div>
-    <p>{{countryName}}</p>
   </div>
 
 </template>
@@ -133,7 +132,6 @@
           return this.results.countryCode || this.locale
         },
         set (newCountry) {
-          console.log('country code', this.countryName)
           this.emitValues({countryCode: newCountry, phoneNumber: this.phoneNumber,countryName: this.countryName})
           if (this.focusInput) {
             this.$refs.PhoneNumberInput.$el.querySelector('input').focus()
@@ -154,7 +152,6 @@
           return this.results.countryName
         },
         set (newCountryName) {
-          console.log('country name ', newCountryName,' Computed value',this.countryName)
           this.emitValues({countryCode: this.countryCode, phoneNumber: this.phoneNumber, countryName : newCountryName})
         }
       },
@@ -187,7 +184,6 @@
       },
       getParsePhoneNumberFromString ({ phoneNumber, countryCode,countryName }) {
         const parsing = phoneNumber && countryCode ? parsePhoneNumberFromString(phoneNumber, countryCode) : null
-        console.log(" We are in the parent country code "+countryCode+" Let's get the new country ", countryName)
         return {
           phoneNumber: phoneNumber ? phoneNumber : null,
           countryCode: countryCode,
