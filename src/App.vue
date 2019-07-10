@@ -61,6 +61,7 @@
             :default-country-code="defaultCountry"
             :ignored-countries="countriesIgnored"
             :preferred-countries="countriesList"
+            :default-country-name="defaultCountryName"
             :loader="hasLoaderActive"
             :error="hasErrorActive"
             clearable
@@ -177,6 +178,7 @@
         phoneNumber: '0665656565',
         phoneNumber2: null,
         defaultCountry: 'FR',
+        defaultCountryName: '',
         countriesList: ['FR', 'BE', 'DE'],
         countriesIgnored: ['AF', 'AD', 'AL'],
         translations: {

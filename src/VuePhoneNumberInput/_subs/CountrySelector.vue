@@ -63,7 +63,6 @@
           ]"
           class="flex align-center country-list-item"
           :style="[value === item.iso2 ? bgStyle : null]"
-          :countryName="countryName"
           @click.stop="updateValue(item)"
 
         >
@@ -189,11 +188,8 @@
         this.isFocus = false
         this.tmpValue = item.iso2
         this.countryName = item.name
-        //console.log(this.tmpValue)
-        //console.log(this.countryName)
         this.$emit('input', item.iso2)
         this.$emit('countryChanged', this.countryName)
-        //this.$emit('name', item.name)
       },
       scrollToSelectedOnFocus (arrayIndex) {
         this.$nextTick(() => {

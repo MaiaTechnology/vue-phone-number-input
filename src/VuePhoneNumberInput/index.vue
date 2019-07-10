@@ -72,7 +72,6 @@
   const isCountryAvailable = (locale) => {
     return countriesIso.includes(locale)
   }
-
   export default {
     name: 'VuePhoneNumberInput',
     components: {
@@ -97,7 +96,8 @@
       noFlags: { type: Boolean, default: false },
       error: { type: Boolean, default: false },
       noExample: { type: Boolean, default: false },
-      required: { type: Boolean, default: false }
+      required: { type: Boolean, default: false },
+      defaultCountryName: { type: String, default: null }
     },
     data () {
       return {
@@ -120,7 +120,10 @@
         const countryAvailable = isCountryAvailable(locale)
 
         if (countryAvailable && locale) {
-          this.countryCode = locale
+          this.countryCode = locale;
+          this.countryName = this.defaultCountryName || countries.find(function(element) {
+             return element.iso2 === locale;
+           }).name;
         } else if (!countryAvailable && this.defaultCountryCode) {
           // If default country code is not available
           console.warn(`The locale ${locale} is not available`)
@@ -176,7 +179,7 @@
           ? null
           : this.hasEmptyPhone || this.isValid ? null : `${this.t.example} ${this.phoneNumberExample}`
       }
-    },
+     },
     methods: {
       getAsYouTypeFormat (payload) {
         const asYouType = new AsYouType(payload.countryCode)
@@ -213,7 +216,6 @@
       populateCountryName(countryName){
         this.countryName = countryName;
       }
-
     }
   }
 </script>
