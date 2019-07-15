@@ -134,7 +134,7 @@
         <div class="component">
           <h3>Datas returned with "onUpdate" event</h3>
           <hr>
-          <b>v-model</b> : {{ phoneNumber }}agirdhar
+          <b>v-model</b> : {{ phoneNumber }}
           <hr>
           <div class="flex flex-wrap">
             <div class="component">
@@ -178,7 +178,7 @@
         phoneNumber: '0665656565',
         phoneNumber2: null,
         defaultCountry: 'FR',
-        defaultCountryName: '',
+        defaultCountryName: 'France',
         countriesList: ['FR', 'BE', 'DE'],
         countriesIgnored: ['AF', 'AD', 'AL'],
         translations: {

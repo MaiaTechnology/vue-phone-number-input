@@ -117,18 +117,18 @@
       },
       locale () {
         const locale = this.defaultCountryCode || (!this.noUseBrowserLocale ? browserLocale() : null)
-        const countryAvailable = isCountryAvailable(locale)
+        const countryNameByLocale = countries.find(function(element) {
+          return element.iso2 === locale;
+        }).name;
 
-        if (countryAvailable && locale) {
+        if (countryNameByLocale && locale) {
           this.countryCode = locale;
-          this.countryName = this.defaultCountryName || countries.find(function(element) {
-             return element.iso2 === locale;
-           }).name;
-        } else if (!countryAvailable && this.defaultCountryCode) {
+          this.countryName = this.defaultCountryName || countryNameByLocale;
+        } else if (!countryNameByLocale && this.defaultCountryCode) {
           // If default country code is not available
           console.warn(`The locale ${locale} is not available`)
         }
-        return countryAvailable ? locale : null
+        return countryNameByLocale ? locale : null
       },
       countryCode: {
         get () {
