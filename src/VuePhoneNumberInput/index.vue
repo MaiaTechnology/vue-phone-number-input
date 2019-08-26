@@ -23,6 +23,7 @@
         :no-flags="noFlags"
         :size="size"
         class="input-country-selector"
+        v-on:countryChanged="populateCountryName"
       />
     </div>
     <div class="flex-1">
@@ -41,12 +42,14 @@
         :valid="isValid && !noValidatorState"
         :required="required"
         type="tel"
+        v-bind="$attrs"
         class="input-phone-number"
         @focus="$emit('phone-number-focused')"
-        @blur="$emit('onBlur')"
+        @blur="$emit('phone-number-blur')"
       />
     </div>
   </div>
+
 </template>
 <script>
   /* eslint-disable */
@@ -69,7 +72,6 @@
   const isCountryAvailable = (locale) => {
     return countriesIso.includes(locale)
   }
-
   export default {
     name: 'VuePhoneNumberInput',
     components: {
@@ -94,12 +96,13 @@
       noFlags: { type: Boolean, default: false },
       error: { type: Boolean, default: false },
       noExample: { type: Boolean, default: false },
-      required: { type: Boolean, default: false }
+      required: { type: Boolean, default: false },
+      defaultCountryName: { type: String, default: null }
     },
     data () {
       return {
         results: {},
-        focusInput: false
+        focusInput: false,
       }
     },
     computed: {
@@ -114,22 +117,25 @@
       },
       locale () {
         const locale = this.defaultCountryCode || (!this.noUseBrowserLocale ? browserLocale() : null)
-        const countryAvailable = isCountryAvailable(locale)
+        const country = countries.find(function(element) {
+          return element.iso2 === locale;
+        });
 
-        if (countryAvailable && locale) {
-          this.countryCode = locale
-        } else if (!countryAvailable && this.defaultCountryCode) {
+        if (country && locale) {
+          this.countryCode = locale;
+          this.countryName = country.name  ;
+        } else if (!country && this.defaultCountryCode) {
           // If default country code is not available
           console.warn(`The locale ${locale} is not available`)
         }
-        return countryAvailable ? locale : null
+        return country ? locale : null
       },
       countryCode: {
         get () {
           return this.results.countryCode || this.locale
         },
         set (newCountry) {
-          this.emitValues({countryCode: newCountry, phoneNumber: this.phoneNumber})
+          this.emitValues({countryCode: newCountry, phoneNumber: this.phoneNumber,countryName: this.countryName})
           if (this.focusInput) {
             this.$refs.PhoneNumberInput.$el.querySelector('input').focus()
           }
@@ -141,7 +147,15 @@
           return this.value
         },
         set (newPhone) {
-          this.emitValues({countryCode: this.countryCode, phoneNumber: newPhone})
+          this.emitValues({countryCode: this.countryCode, phoneNumber: newPhone, countryName: this.countryName})
+        }
+      },
+      countryName: {
+        get () {
+          return this.results.countryName
+        },
+        set (newCountryName) {
+          this.emitValues({countryCode: this.countryCode, phoneNumber: this.phoneNumber, countryName : newCountryName})
         }
       },
       shouldChooseCountry () {
@@ -165,30 +179,31 @@
           ? null
           : this.hasEmptyPhone || this.isValid ? null : `${this.t.example} ${this.phoneNumberExample}`
       }
-    },
+     },
     methods: {
       getAsYouTypeFormat (payload) {
         const asYouType = new AsYouType(payload.countryCode)
         return asYouType.input(payload.phoneNumber)
       },
-      getParsePhoneNumberFromString ({ phoneNumber, countryCode }) {
+      getParsePhoneNumberFromString ({ phoneNumber, countryCode,countryName }) {
         const parsing = phoneNumber && countryCode ? parsePhoneNumberFromString(phoneNumber, countryCode) : null
         return {
           phoneNumber: phoneNumber ? phoneNumber : null,
           countryCode: countryCode,
+          countryName: countryName,
           isValid: false,
           ...( parsing
-            ? {
-              formattedNumber: parsing.number,
-              nationalNumber: parsing.nationalNumber,
-              isValid: parsing.isValid(),
-              type: parsing.getType(),
-              formatInternational: parsing.formatInternational(),
-              formatNational: parsing.formatNational(),
-              uri: parsing.getURI(),
-              e164: parsing.format('E.164')
-            }
-            : null
+              ? {
+                formattedNumber: parsing.number,
+                nationalNumber: parsing.nationalNumber,
+                isValid: parsing.isValid(),
+                type: parsing.getType(),
+                formatInternational: parsing.formatInternational(),
+                formatNational: parsing.formatNational(),
+                uri: parsing.getURI(),
+                e164: parsing.format('E.164')
+              }
+              : null
           )
         }
       },
@@ -197,6 +212,9 @@
         this.$emit('input', asYouType)
         this.results = this.getParsePhoneNumberFromString(payload)
         this.$emit('update', this.results)
+      },
+      populateCountryName(countryName){
+        this.countryName = countryName;
       }
     }
   }
@@ -209,7 +227,7 @@
       box-sizing: border-box;
     }
     font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen,
-        Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
     .select-country-container {
       flex: 0 0 120px;
       width: 120px;

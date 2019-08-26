@@ -63,7 +63,8 @@
           ]"
           class="flex align-center country-list-item"
           :style="[value === item.iso2 ? bgStyle : null]"
-          @click.stop="updateValue(item.iso2)"
+          @click.stop="updateValue(item)"
+
         >
           <div
             v-if="!noFlags"
@@ -108,22 +109,25 @@
       ignoredCountries: { type: Array, default: Array },
       noFlags: { type: Boolean, default: false }
     },
-    data () {
+    data(){
       return {
         isFocus: false,
         selectedIndex: null,
         tmpValue: this.value,
-        query: ''
+        query: '',
+        countryName:''
       }
     },
     computed: {
       borderStyle () {
         const cond = (this.isFocus && !this.error) || this.valid
-        return cond ? { border: `1px solid ${this.valid ? this.validColor : this.color} !important` } : null
+        const color = this.valid ? this.validColor : this.color
+        return cond ? { border: `1px solid ${color} !important` } : null
       },
       colorStyle () {
         const cond = this.isFocus || this.valid
-        return cond ? { color: `${this.valid ? this.validColor : this.color}` } : null
+        const color = this.valid ? this.validColor : this.color
+        return cond ? { color: `${color}` } : null
       },
       bgStyle () {
         return { backgroundColor: `${this.color}` }
@@ -146,7 +150,7 @@
       countriesSorted () {
         return this.preferredCountries
           ? [ ...this.countriesFiltered,
-              ...this.otherCountries ]
+            ...this.otherCountries ]
           : this.onlyCountries
             ? this.countriesFiltered
             : this.countriesList
@@ -180,10 +184,12 @@
         this.$emit('blur')
         this.isFocus = false
       },
-      updateValue (iso2) {
+      updateValue (item) {
         this.isFocus = false
-        this.tmpValue = iso2
-        this.$emit('input', iso2)
+        this.tmpValue = item.iso2
+        this.countryName = item.name
+        this.$emit('input', item.iso2)
+        this.$emit('countryChanged', this.countryName)
       },
       scrollToSelectedOnFocus (arrayIndex) {
         this.$nextTick(() => {
